@@ -8,6 +8,7 @@ import Controls from '../components/video-player-controls';
 import ProgressBar from '../components/progress-bar';
 import Spinner from '../components/spinner';
 import Volume from '../components/Volume';
+import Fullscreen from '../components/Fullscreen';
 
 class VideoPlayer extends Component {
   state = {
@@ -50,6 +51,17 @@ class VideoPlayer extends Component {
   handleVolumeChange = event => {
     this.video.volume = event.target.value;
   };
+  handleFullscreenClick = event => {
+    if (!document.webkitIsFullScreen) {
+      this.player.webkitRequestFullscreen (); // mando a full screen
+    } else {
+      document.webkitExitFullscreen (); // salgo del full screen
+    }
+  };
+  setPlayerRef = element => {
+    this.player = element;
+    //Se está creando en this un elemento llamado player que ahora contiene la refencia
+  };
   componentDidMount () {
     this.setState ({
       pause: !this.props.autoPlay,
@@ -57,7 +69,7 @@ class VideoPlayer extends Component {
   }
   render () {
     return (
-      <VideoPlayerLayout>
+      <VideoPlayerLayout setRef={this.setPlayerRef}>
         <Title title="HOLALA" />
         <Controls>
           <PlayPause handleClick={this.tooglePlay} pause={this.state.pause} />
@@ -71,6 +83,7 @@ class VideoPlayer extends Component {
             handleProgressChange={this.handleProgressChange}
           />
           <Volume handleVolumeChange={this.handleVolumeChange} />
+          <Fullscreen handleFullscreenClick={this.handleFullscreenClick} />
         </Controls>
         <Spinner active={this.state.loading} />
         <Video
