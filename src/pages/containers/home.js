@@ -12,9 +12,10 @@ class Home extends Component {
     //Solamente asi, gracias a ES7!
     modalVisible: false,
   };
-  handleOpenModal = () => {
+  handleOpenModal = media => {
     this.setState ({
       modalVisible: true,
+      media, //media: media
     });
   };
   handleCloseModal = event => {
@@ -27,7 +28,6 @@ class Home extends Component {
       <HandleError>
         <HomeLayout>
           <Related />
-          <VideoPlayer autoPlay />
           <Categories
             handleOpenModal={this.handleOpenModal}
             categories={this.props.data.categories}
@@ -35,7 +35,11 @@ class Home extends Component {
           {this.state.modalVisible && //Condicional ternario sin else ':'
             <ModalContainer>
               <Modal handleClick={this.handleCloseModal}>
-                <h2>Hola soy un Portal</h2>
+                <VideoPlayer
+                  autoPlay
+                  src={this.state.media.src}
+                  title={this.state.media.title}
+                />
               </Modal>
             </ModalContainer>}
         </HomeLayout>
